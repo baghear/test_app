@@ -19,7 +19,7 @@
           label="name@hoteldomain.com"
           v-model="email"
           @update:error="validEmail = !$event"
-          :rules="[rules.required, rules.email]"
+          :rules="[rules.email]"
       >
         <template v-slot:append v-if="!validEmail">
           <img
@@ -102,7 +102,6 @@ export default {
       validPassword: true,
 
       rules: {
-        required: value => !!value || 'Required',
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Please check email address'
@@ -116,10 +115,11 @@ export default {
   methods: {
 
     submitHandler () {
-        console.log(this.$refs.form)
         if (this.$refs.form.validate()){
           console.log(this.email, this.password)
         }
+        this.validEmail = this.$refs.form.inputs[0].valid
+        this.validPassword = this.$refs.form.inputs[1].valid
       }
 
   },
